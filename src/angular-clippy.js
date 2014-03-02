@@ -10,23 +10,26 @@
     .config(function() {
       clippy.BASE_PATH = currentScriptPath.replace('angular-clippy.js', 'Agents/');
     })
-    .directive('clippy', [function() {
+    .directive('clippy', ['$parse', function($parse) {
       return {
         restrict: 'E',
         transclude: false,
         scope: true,
         link: function(scope, element, attrs) {
           var agentName = attrs.agent || 'Clippy'
-            , callback = attrs.setup
+            , onInit = attrs.onInit
+            , _agent
             ;
           clippy.load(agentName, function(agent) {
+            _agent = agent;
             agent.moveTo(element.offset().left, element.offset().top);
             agent.show();
-            if (callback) {
-              scope.$apply(function(scope){
-                scope[callback](agent);
-              });
-            }
+            scope.$apply(function(scope){
+              $parse(onInit)(scope)(agent);
+            });
+          });
+          scope.$on('$destroy', function() {
+            if (_agent) { _agent.hide(); }
           });
         }
       };

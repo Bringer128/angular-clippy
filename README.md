@@ -34,10 +34,10 @@ Usage
 -----
 
 ```{html}
-<clippy data-agent="Merlin" data-setup="callbackName"></clippy>
+<clippy data-agent="Merlin" data-on-init="callbackName"></clippy>
 ```
 
  Attribute     | Description                                                    
  ------------- | -------------------
  agent         | string denoting the clippy agent desired, see agents/
- setup         | name of the callback function in your scope, will be called with the initialized agent as the first argument
+ on-init       | name of the callback function in your scope, will be called with the initialized agent as the first argument
